@@ -1,0 +1,73 @@
+@mixin tooltipPosition($bg-color,
+    $text-color,
+    $border-color,
+    $transform-length,
+    $top,
+    $bottom) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(12, 156, 12);
+    color: aliceblue;
+    padding: 10px 15px;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &:hover,
+    &:active {
+        cursor: pointer;
+        background-color: rgb(10, 135, 10);
+        box-shadow: 0 0 5px rgb(10, 135, 10);
+    }
+
+    &::after {
+        content: attr(aria-valuetext);
+        position: absolute;
+        background-color: $bg-color;
+        color: $text-color;
+        border-radius: 5px;
+        padding: 7px 10px;
+        white-space: nowrap;
+        bottom: $bottom;
+        opacity: 0;
+        transition: all 0.3s ease;
+
+        @if ($top) {
+            bottom: 100%;
+            transform: translateY(-1 * $transform-length);
+        }
+
+        @else if ($bottom) {
+            top: 100%;
+            transform: translateY($transform-length);
+        }
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        border: 10px solid transparent;
+        opacity: 0;
+        transition: all 0.3s ease;
+
+        @if ($top) {
+            top: 0;
+            transform: translateY(-1.1 * $transform-length);
+            border-top-color: $bg-color;
+        }
+
+        @else if($bottom) {
+            bottom: 0;
+            transform: translateY(1.1 * $transform-length);
+            border-bottom-color: $bg-color;
+        }
+    }
+
+    &:hover::after,
+    &:hover::before {
+        opacity: 1;
+    }
+}
